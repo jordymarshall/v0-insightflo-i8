@@ -1,30 +1,49 @@
-# insightflo
+# InsightFlo
 
-*Automatically synced with your [v0.dev](https://v0.dev) deployments*
+This is a Next.js project for InsightFlo, a survey and insights platform.
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/jordanislockedin-gmailcoms-projects/v0-insightflo-r8)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.dev-black?style=for-the-badge)](https://v0.dev/chat/projects/Bd56UjGxdWZ)
+## Project Structure
 
-## Overview
+The project is organized into the following sections:
 
-This repository will stay in sync with your deployed chats on [v0.dev](https://v0.dev).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.dev](https://v0.dev).
+- `/app/landing/` - Landing Page
+- `/app/home/` - Home Page (Post Sign-In)
+- `/app/account-settings/` - Account Settings Page
+- `/app/survey-editor/` - Survey Editor (Context, Questions, Insights)
+- `/app/survey-respondent/` - Respondent & Preview View
 
-## Deployment
+## Importing Existing Files
 
-Your project is live at:
+To complete the setup, you need to copy over all the `.tsx`, CSS, and asset files from the existing v0 chats into the corresponding folders:
 
-**[https://vercel.com/jordanislockedin-gmailcoms-projects/v0-insightflo-r8](https://vercel.com/jordanislockedin-gmailcoms-projects/v0-insightflo-r8)**
+1. **Landing Page vF** → `/app/landing/`
+2. **Home Page (Post Sign-In)** → `/app/home/`
+3. **Account Settings Page** → `/app/account-settings/` (+ its `layout.tsx`)
+4. **Core Pages** → `/app/survey-editor/` (`survey-context-page.tsx`, `questions-page.tsx`, `insights-page.tsx`)
+5. **Respondent & Preview** → `/app/survey-respondent/page.tsx` and `/app/survey-respondent/preview.tsx`
 
-## Build your app
+Ensure that all imports and paths resolve correctly, and merge any shared components under `/components/ui`.
 
-Continue building your app on:
+## Getting Started
 
-**[https://v0.dev/chat/projects/Bd56UjGxdWZ](https://v0.dev/chat/projects/Bd56UjGxdWZ)**
+First, install the dependencies:
 
-## How It Works
+\`\`\`bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+\`\`\`
 
-1. Create and modify your project using [v0.dev](https://v0.dev)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+Then, run the development server:
+
+\`\`\`bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+\`\`\`
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
