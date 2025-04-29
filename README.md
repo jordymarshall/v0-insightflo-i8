@@ -1,6 +1,7 @@
 # InsightFlo
 
-This is a Next.js project for InsightFlo, a survey and insights platform.
+This is a Next.js VIBE project for InsightFlo, a survey and insights platform.
+ALL VIBES IN HERE!
 
 ## Project Structure
 
