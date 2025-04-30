@@ -1,6 +1,6 @@
 import { MessageSquare, LineChart, Brain, Lightbulb, UserPlus, Users } from "lucide-react"
-import { FadeIn } from "@/app/landing/components/fade-in"
-import { StaggeredFade } from "@/app/landing/components/staggered-fade"
+import { FadeIn } from "@/components/fade-in"
+import { StaggeredFade } from "@/components/staggered-fade"
 
 export function ValuePropositionSection() {
   const features = [
