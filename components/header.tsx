@@ -2,7 +2,6 @@
 
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { ThemeToggle } from "@/components/theme-toggle"
 
 export function Header() {
   const scrollToTop = () => {
@@ -20,7 +19,6 @@ export function Header() {
         </button>
 
         <div className="flex items-center gap-2 md:gap-4">
-          <ThemeToggle />
           <Button
             className="bg-white text-black border border-black hover:bg-gray-100 text-sm px-3 py-1 h-8 md:h-10 md:px-4 md:py-2 md:text-base"
             asChild

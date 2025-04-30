@@ -1,26 +1,27 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { Textarea } from "@/components/ui/textarea"
-import { Header } from "@/components/header"
-import { FaqSection } from "@/components/faq-section"
-import { ValuePropositionSection } from "@/components/value-proposition-section"
-import { TypingEffect } from "@/components/typing-effect"
-import { FadeIn } from "@/components/fade-in"
-import Link from "next/link"
-import { useEffect, useState, useRef } from "react"
-import { ChevronDown } from "lucide-react"
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Textarea } from "@/components/ui/textarea";
+import { Header } from "@/components/header";
+import { FaqSection } from "@/components/faq-section";
+import { ValuePropositionSection } from "@/components/value-proposition-section";
+import { TypingEffect } from "@/components/typing-effect";
+import { FadeIn } from "@/components/fade-in";
+import Link from "next/link";
+import { useEffect, useState, useRef } from "react";
+import { ChevronDown } from "lucide-react";
+import { generateWorkflow } from "@/lib/api";
 
 export default function LandingPage() {
   // State to track if component is mounted (for SSR compatibility)
-  const [isMounted, setIsMounted] = useState(false)
-  const [showPlaceholder, setShowPlaceholder] = useState(false)
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const [isMounted, setIsMounted] = useState(false);
+  const [showPlaceholder, setShowPlaceholder] = useState(false);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Add these new state variables
-  const [isFocused, setIsFocused] = useState(false)
-  const [userHasTyped, setUserHasTyped] = useState(false)
+  const [isFocused, setIsFocused] = useState(false);
+  const [userHasTyped, setUserHasTyped] = useState(false);
 
   const placeholderTexts = [
     "Interview recent users who considered but ultimately decided against purchasing our premium subscription, to deeply understand their hesitations and underlying concerns.",
@@ -33,32 +34,56 @@ export default function LandingPage() {
     "Speak to recent hires about their onboarding experience, specifically exploring feelings of belonging, anxiety, and support to improve team integration.",
     "Conduct interviews with power users to deeply understand their workflow, uncovering nuanced pain points or workarounds they haven't explicitly reported.",
     "Talk with customers who recently downgraded their plans about their detailed reasoning, priorities, and the emotional or contextual factors influencing their decisions.",
-  ]
+  ];
 
   useEffect(() => {
-    setIsMounted(true)
+    setIsMounted(true);
 
     // Start the placeholder typing effect after a short delay
     const timer = setTimeout(() => {
-      setShowPlaceholder(true)
-    }, 1000)
+      setShowPlaceholder(true);
+    }, 1000);
 
-    return () => clearTimeout(timer)
-  }, [])
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleTypingComplete = () => {
     // Add a blinking cursor effect after typing is complete
     if (textareaRef.current) {
-      textareaRef.current.classList.add("cursor-blink")
+      textareaRef.current.classList.add("cursor-blink");
     }
-  }
+  };
+
+  const handleGenerateWorkflow = async () => {
+    try {
+      const text = textareaRef.current?.value;
+      if (!text) {
+        return;
+      }
+      const data = await generateWorkflow(text);
+      // Navigate to the editor with the workflow ID
+      if (data && data.workflowId) {
+        window.location.href = `/editor/${data.workflowId}`;
+      } else {
+        // throw new Error("No workflow ID received");
+        window.location.href = `/editor/0`;
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert(
+        error instanceof Error
+          ? error.message
+          : "Failed to generate workflow. Please try again."
+      );
+    }
+  };
 
   const scrollToNextSection = () => {
     window.scrollTo({
       top: window.innerHeight,
       behavior: "smooth",
-    })
-  }
+    });
+  };
 
   return (
     <>
@@ -72,7 +97,9 @@ export default function LandingPage() {
               <FadeIn delay={300} duration={800}>
                 <div className="mb-4 flex flex-col items-center justify-center pt-4 sm:pt-0">
                   <h1 className="text-4xl xs:text-4xl sm:text-4xl md:text-4xl lg:text-5xl font-bold tracking-tight text-center leading-tight md:leading-normal px-1 mx-auto">
-                    <span className="text-gray-900 block sm:inline">User Interviews</span>{" "}
+                    <span className="text-gray-900 block sm:inline">
+                      User Interviews
+                    </span>{" "}
                     <span className="bg-gradient-to-r from-purple-500 via-violet-400 to-blue-400 bg-clip-text text-transparent animate-gradient-shift block sm:inline mt-1 sm:mt-0">
                       on Autopilot
                     </span>
@@ -83,8 +110,8 @@ export default function LandingPage() {
               {/* Subtitle - Responsive font sizes */}
               <FadeIn delay={600} duration={800}>
                 <p className="mx-auto mb-6 md:mb-8 max-w-2xl text-base sm:text-lg md:text-xl text-gray-600 px-2">
-                  Conversations at scale, contextualized with real-time agentic market intelligence to supercharge your
-                  insights.
+                  Conversations at scale, contextualized with real-time agentic
+                  market intelligence to supercharge your insights.
                 </p>
               </FadeIn>
             </div>
@@ -97,61 +124,38 @@ export default function LandingPage() {
                   <div className="absolute -inset-0.5 rounded-xl bg-gradient-to-r from-purple-400 to-blue-400 opacity-40 blur-md animate-pulse"></div>
 
                   <Card className="relative h-full overflow-hidden border-0 bg-white p-4 sm:p-6 shadow-lg">
-                    {showPlaceholder && !isFocused && !userHasTyped ? (
                       <div className="relative h-full">
-                        <TypingEffect
-                          texts={placeholderTexts}
-                          delay={30}
-                          eraseDelay={10}
-                          pauseBetweenTexts={3000}
-                          className="h-full w-full border-0 bg-transparent p-0 shadow-none focus-visible:ring-0 resize-none overflow-auto text-gray-600 placeholder:text-gray-400 block absolute top-0 left-0 pointer-events-none"
-                          onComplete={handleTypingComplete}
-                        />
+                        {showPlaceholder && !isFocused && !userHasTyped && (
+                          <TypingEffect
+                            texts={placeholderTexts}
+                            delay={30}
+                            eraseDelay={10}
+                            pauseBetweenTexts={3000}
+                            className="absolute top-0 left-0 w-full h-full text-gray-400 pointer-events-none p-0 m-0"
+                            onComplete={handleTypingComplete}
+                          />
+                        )}
+
                         <Textarea
                           ref={textareaRef}
-                          className="h-full w-full border-0 bg-transparent p-0 shadow-none focus-visible:ring-0 resize-none overflow-auto text-gray-600 placeholder:text-gray-400 absolute top-0 left-0 z-10"
+                          className="absolute top-0 left-0 z-10 h-full w-full border-0 bg-transparent p-0 shadow-none resize-none text-gray-600 outline-none focus:outline-none focus-visible:outline-none"
                           placeholder=""
-                          style={{ fontSize: "16px", background: "transparent" }}
                           onFocus={() => setIsFocused(true)}
                           onBlur={() => {
-                            setIsFocused(false)
-                            // Only restart animation if user hasn't typed anything
+                            setIsFocused(false);
                             if (!textareaRef.current?.value) {
-                              setUserHasTyped(false)
+                              setUserHasTyped(false);
                             }
                           }}
                           onChange={(e) => {
                             if (e.target.value) {
-                              setUserHasTyped(true)
+                              setUserHasTyped(true);
                             } else {
-                              setUserHasTyped(false)
+                              setUserHasTyped(false);
                             }
                           }}
                         />
                       </div>
-                    ) : (
-                      <Textarea
-                        ref={textareaRef}
-                        className="h-full w-full border-0 bg-transparent p-0 shadow-none focus-visible:ring-0 resize-none overflow-auto text-gray-600 placeholder:text-gray-400"
-                        placeholder="Tell us about your context and interview goals with as much detail as possible..."
-                        style={{ fontSize: "16px" }}
-                        onFocus={() => setIsFocused(true)}
-                        onBlur={() => {
-                          setIsFocused(false)
-                          // Only restart animation if user hasn't typed anything
-                          if (!textareaRef.current?.value) {
-                            setUserHasTyped(false)
-                          }
-                        }}
-                        onChange={(e) => {
-                          if (e.target.value) {
-                            setUserHasTyped(true)
-                          } else {
-                            setUserHasTyped(false)
-                          }
-                        }}
-                      />
-                    )}
                   </Card>
                 </div>
               </FadeIn>
@@ -159,10 +163,17 @@ export default function LandingPage() {
               {/* Buttons - Adjusted for mobile */}
               <div className="flex flex-col items-center justify-center space-y-4 mb-12 md:mb-0 w-full">
                 {/* Refined Generate Workflow CTA with scale animation */}
-                <FadeIn delay={1200} duration={800} className="w-full flex justify-center">
+                <FadeIn
+                  delay={1200}
+                  duration={800}
+                  className="w-full flex justify-center"
+                >
                   <div className="relative inline-block group">
                     {/* Button with matching gradient from "on Autopilot" text and scale animation */}
-                    <Button className="relative h-12 md:h-14 rounded-xl bg-gradient-to-r from-purple-500 via-violet-400 to-blue-400 px-6 md:px-10 text-base md:text-lg font-semibold text-white transition-all duration-300 shadow-sm hover:shadow-md flex items-center gap-2 transform hover:scale-105">
+                    <Button
+                      onClick={handleGenerateWorkflow}
+                      className="relative h-12 md:h-14 rounded-xl bg-gradient-to-r from-purple-500 via-violet-400 to-blue-400 px-6 md:px-10 text-base md:text-lg font-semibold text-white transition-all duration-300 shadow-sm hover:shadow-md flex items-center gap-2 transform hover:scale-105"
+                    >
                       {/* Button text with underline animation */}
                       <span className="relative">
                         Generate Workflow
@@ -187,14 +198,18 @@ export default function LandingPage() {
                     </Button>
                   </div>
                 </FadeIn>
-                <FadeIn delay={1400} duration={800} className="w-full flex justify-center">
+                {/* <FadeIn
+                  delay={1400}
+                  duration={800}
+                  className="w-full flex justify-center"
+                >
                   <Link
-                    href="#"
+                    href="/editor/0"
                     className="text-sm md:text-base font-medium text-purple-600 underline decoration-dotted underline-offset-4 hover:text-purple-800 transition-colors duration-300"
                   >
                     Or start blank canvas
                   </Link>
-                </FadeIn>
+                </FadeIn> */}
               </div>
             </div>
           </div>
@@ -206,7 +221,9 @@ export default function LandingPage() {
               className="flex flex-col items-center text-gray-500 hover:text-gray-800 transition-colors duration-300 animate-subtle-float"
               aria-label="Scroll to learn more"
             >
-              <span className="text-xs md:text-sm mb-1 opacity-80">Learn more</span>
+              <span className="text-xs md:text-sm mb-1 opacity-80">
+                Learn more
+              </span>
               <ChevronDown className="h-5 w-5 md:h-6 md:w-6 opacity-70" />
             </button>
           </div>
@@ -221,5 +238,5 @@ export default function LandingPage() {
         <FaqSection />
       </div>
     </>
-  )
+  );
 }

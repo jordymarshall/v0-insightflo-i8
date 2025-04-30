@@ -1,19 +1,19 @@
 "use client"
 
 import { useState } from "react"
-import SurveyEditorHeader from "./components/survey-editor-header"
-import type { Question } from "./types/survey-types"
-import { useAutoSave } from "./hooks/use-auto-save"
-import { useIsMobile } from "./hooks/use-mobile"
-import SurveyContextPage from "./components/survey-context-page"
-import QuestionsSection from "./components/questions-band"
-import InsightsPage from "./components/insights-page"
-import type { Hypothesis } from "./components/hypotheses-band"
+import SurveyEditorHeader from "../components/survey-editor-header"
+import type { Question } from "../types/survey-types"
+import { useAutoSave } from "../hooks/use-auto-save"
+import { useIsMobile } from "../hooks/use-mobile"
+import SurveyContextPage from "../components/survey-context-page"
+import QuestionsSection from "../components/questions-band"
+import InsightsPage from "../components/insights-page"
+import type { Hypothesis } from "../components/hypotheses-band"
 import { Button } from "@/components/ui/button"
 import { ClipboardCheck, MessageSquare, BarChart3, Menu, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { ContentWrapper } from "./components/content-wrapper"
+import { ContentWrapper } from "../components/content-wrapper"
 
 // Sample respondent data for the insights page
 const sampleRespondents = [

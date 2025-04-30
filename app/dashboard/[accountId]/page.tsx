@@ -1,5 +1,5 @@
 import { Suspense } from "react"
-import AccountHeader from "../components/account-header"
+import AccountHeader from "@/components/account-header"
 import InterviewInsights from "../components/interview-insights"
 import { Skeleton } from "@/components/ui/skeleton"
 
