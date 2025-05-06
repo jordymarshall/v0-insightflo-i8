@@ -1,7 +1,7 @@
 "use client"
 
-import { CustomAccordion, CustomAccordionItem } from "@/app/landing/components/custom-accordion"
-import { FadeIn } from "@/app/landing/components/fade-in"
+import { CustomAccordion, CustomAccordionItem } from "@/components/custom-accordion"
+import { FadeIn } from "@/components/fade-in"
 
 export function FaqSection() {
   const faqs = [
